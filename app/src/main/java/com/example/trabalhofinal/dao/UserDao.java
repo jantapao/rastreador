@@ -6,9 +6,9 @@ import androidx.room.Insert;
 import com.example.trabalhofinal.entities.User;
 
 @Dao
-public class UserDao {
+public interface UserDao {
     @Insert
-    void insert(User user);
+    void insertUser(User user);
 
     // TODO - Consulta pelo Usuário
 }
