@@ -15,14 +15,18 @@ import androidx.room.PrimaryKey;
 )
 public class Encomenda {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     private String codigo;
-    private int userId;
+    private long userId;
 
     public Encomenda() {}
 
-    public int getId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -34,11 +38,11 @@ public class Encomenda {
         this.codigo = codigo;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 }

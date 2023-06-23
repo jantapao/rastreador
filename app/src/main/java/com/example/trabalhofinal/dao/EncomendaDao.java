@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface EncomendaDao {
     @Insert
-    void insertEncomenda(Encomenda encomenda);
+    long insertEncomenda(Encomenda encomenda);
 
     @Query("SELECT * FROM encomendas")
     List<Encomenda> getAllEncomendas();

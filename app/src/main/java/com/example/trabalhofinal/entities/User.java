@@ -6,14 +6,18 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "users")
 public class User {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     private String email;
     private String password;
 
     public User() {}
 
-    public int getId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 

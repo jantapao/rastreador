@@ -1,16 +1,15 @@
 package com.example.trabalhofinal.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.dao.UserDao;
@@ -19,6 +18,9 @@ import com.example.trabalhofinal.entities.User;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
+import java.util.concurrent.Executors;
 
 public class FragmentLogin extends Fragment {
 
@@ -56,20 +58,20 @@ public class FragmentLogin extends Fragment {
         entrarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doLogin(usrInput.toString(), senhaInput.toString());
+                doLogin(usrInput.getText().toString(), senhaInput.getText().toString());
             }
         });
 
         cadastroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = usrInput.toString();
-                String password = senhaInput.toString();
+                String email = usrInput.getText().toString();
+                String password = senhaInput.getText().toString();
 
                 if (!email.trim().isEmpty() && !password.trim().isEmpty()) {
-                    createUser(usrInput.toString(), senhaInput.toString());
+                    createUser(email, password);
                 } else {
-                    Toast.makeText(requireContext(), "E-mail ou senha inválido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "E-mail ou senha inválidos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -81,22 +83,30 @@ public class FragmentLogin extends Fragment {
         user.setEmail(email);
         user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 
-        userDao.insertUser(user);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            long insertedId = userDao.insertUser(user);
 
-        if (user.getId() > 0) {
-            Toast.makeText(requireContext(), "Usuário inserido com sucesso", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "Erro ao inserir o usuário", Toast.LENGTH_SHORT).show();
-        }
+            requireActivity().runOnUiThread(() -> {
+                if (insertedId > 0) {
+                    Toast.makeText(requireContext(), "Usuário inserido com sucesso", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Erro ao inserir o usuário", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     public void doLogin(String email, String password) {
-        User user = userDao.getUserByEmailAndPassword(email, BCrypt.hashpw(password, BCrypt.gensalt()));
+        Executors.newSingleThreadExecutor().execute(() -> {
+            User user = userDao.getUserByEmailAndPassword(email, BCrypt.hashpw(password, BCrypt.gensalt()));
 
-        if (user != null) {
-            Toast.makeText(requireContext(), "Usuário encontrado: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
-        }
+            requireActivity().runOnUiThread(() -> {
+                if (user != null) {
+                    Toast.makeText(requireContext(), "Usuário encontrado: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }
