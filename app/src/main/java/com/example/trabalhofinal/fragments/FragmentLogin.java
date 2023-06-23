@@ -10,16 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.dao.UserDao;
+import com.example.trabalhofinal.database.AppDatabase;
+import com.example.trabalhofinal.entities.User;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class FragmentLogin extends Fragment {
+
+    private UserDao userDao;
 
     public FragmentLogin() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,9 @@ public class FragmentLogin extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        AppDatabase db = AppDatabase.getInstance(requireContext());
+        userDao = db.userDao();
+
         TextInputEditText usrInput = view.findViewById(R.id.usuarioinput);
         TextInputEditText senhaInput = view.findViewById(R.id.senhainput);
 
@@ -46,15 +56,47 @@ public class FragmentLogin extends Fragment {
         entrarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Validar Usuario no BD
+                doLogin(usrInput.toString(), senhaInput.toString());
             }
         });
 
         cadastroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Cadastrar Usuario no Sistema
+                String email = usrInput.toString();
+                String password = senhaInput.toString();
+
+                if (!email.trim().isEmpty() && !password.trim().isEmpty()) {
+                    createUser(usrInput.toString(), senhaInput.toString());
+                } else {
+                    Toast.makeText(requireContext(), "E-mail ou senha inválido", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    public void createUser(String email, String password) {
+        User user = new User();
+
+        user.setEmail(email);
+        user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+
+        userDao.insertUser(user);
+
+        if (user.getId() > 0) {
+            Toast.makeText(requireContext(), "Usuário inserido com sucesso", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "Erro ao inserir o usuário", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void doLogin(String email, String password) {
+        User user = userDao.getUserByEmailAndPassword(email, BCrypt.hashpw(password, BCrypt.gensalt()));
+
+        if (user != null) {
+            Toast.makeText(requireContext(), "Usuário encontrado: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
+        }
     }
 }
