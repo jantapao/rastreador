@@ -1,4 +1,4 @@
-package com.example.trabalhofinal;
+package com.example.trabalhofinal.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.trabalhofinal.MyItemRecyclerViewAdapter;
+import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.placeholder.PlaceholderContent;
 
 /**

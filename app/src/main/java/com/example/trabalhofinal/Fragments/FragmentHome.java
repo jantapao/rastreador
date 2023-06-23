@@ -1,4 +1,4 @@
-package com.example.trabalhofinal;
+package com.example.trabalhofinal.Fragments;
 
 import android.os.Bundle;
 
@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.trabalhofinal.MainActivity;
+import com.example.trabalhofinal.R;
 
 public class FragmentHome extends Fragment {
 
