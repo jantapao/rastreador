@@ -1,6 +1,7 @@
 package com.example.trabalhofinal.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,10 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 
 public class FragmentLogin extends Fragment {
+    private static final String SALT = "$2a$10$1234567890123456789012";
 
     private UserDao userDao;
 
@@ -81,24 +82,30 @@ public class FragmentLogin extends Fragment {
         User user = new User();
 
         user.setEmail(email);
-        user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+        user.setPassword(BCrypt.hashpw(password, SALT));
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            long insertedId = userDao.insertUser(user);
+            if (userDao.getUserByEmail(email) != null) {
+                requireActivity().runOnUiThread(() -> {
+                    Toast.makeText(requireContext(), "E-mail já utilizado", Toast.LENGTH_SHORT).show();
+                });
+            } else {
+                long insertedId = userDao.insertUser(user);
 
-            requireActivity().runOnUiThread(() -> {
-                if (insertedId > 0) {
-                    Toast.makeText(requireContext(), "Usuário inserido com sucesso", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(requireContext(), "Erro ao inserir o usuário", Toast.LENGTH_SHORT).show();
-                }
-            });
+                requireActivity().runOnUiThread(() -> {
+                    if (insertedId > 0) {
+                        Toast.makeText(requireContext(), "Usuário inserido com sucesso", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Erro ao inserir o usuário", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
     }
 
     public void doLogin(String email, String password) {
         Executors.newSingleThreadExecutor().execute(() -> {
-            User user = userDao.getUserByEmailAndPassword(email, BCrypt.hashpw(password, BCrypt.gensalt()));
+            User user = userDao.getUserByEmailAndPassword(email, BCrypt.hashpw(password, SALT));
 
             requireActivity().runOnUiThread(() -> {
                 if (user != null) {
