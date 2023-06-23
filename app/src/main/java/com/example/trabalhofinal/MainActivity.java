@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.trabalhofinal.Fragments.FragmentHome;
+
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;

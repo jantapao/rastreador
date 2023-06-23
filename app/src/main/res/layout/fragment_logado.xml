@@ -4,30 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.FragmentHome">
+    tools:context=".Fragments.FragmentLogado">
 
     <Button
-        android:id="@+id/btnrastreio"
+        android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Rastrear sem Logar"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnlogin"
-        app:layout_constraintVertical_bias="0.226" />
-
-    <Button
-        android:id="@+id/btnlogin"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
-        android:text="Fazer Login"
-        android:textSize="20sp"
+        android:layout_marginTop="260dp"
+        android:text="Lista de Encomendas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:text="Rastrear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

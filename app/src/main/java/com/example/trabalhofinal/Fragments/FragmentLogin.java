@@ -1,4 +1,4 @@
-package com.example.trabalhofinal;
+package com.example.trabalhofinal.Fragments;
 
 import android.os.Bundle;
 
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.trabalhofinal.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class FragmentLogin extends Fragment {
