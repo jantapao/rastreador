@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.trabalhofinal.Fragments.FragmentHome;
+import com.example.trabalhofinal.fragments.FragmentHome;
 
 public class MainActivity extends AppCompatActivity {
 
