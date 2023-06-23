@@ -1,7 +1,6 @@
 package com.example.trabalhofinal.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,24 +55,16 @@ public class FragmentLogin extends Fragment {
         Button entrarButton = view.findViewById(R.id.btnentrar);
         Button cadastroButton = view.findViewById(R.id.btncadastro);
 
-        entrarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doLogin(usrInput.getText().toString(), senhaInput.getText().toString());
-            }
-        });
+        entrarButton.setOnClickListener(v -> doLogin(usrInput.getText().toString(), senhaInput.getText().toString()));
 
-        cadastroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = usrInput.getText().toString();
-                String password = senhaInput.getText().toString();
+        cadastroButton.setOnClickListener(v -> {
+            String email = usrInput.getText().toString();
+            String password = senhaInput.getText().toString();
 
-                if (!email.trim().isEmpty() && !password.trim().isEmpty()) {
-                    createUser(email, password);
-                } else {
-                    Toast.makeText(requireContext(), "E-mail ou senha inválidos", Toast.LENGTH_SHORT).show();
-                }
+            if (!email.trim().isEmpty() && !password.trim().isEmpty()) {
+                createUser(email, password);
+            } else {
+                Toast.makeText(requireContext(), "E-mail ou senha inválidos", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -86,9 +77,7 @@ public class FragmentLogin extends Fragment {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             if (userDao.getUserByEmail(email) != null) {
-                requireActivity().runOnUiThread(() -> {
-                    Toast.makeText(requireContext(), "E-mail já utilizado", Toast.LENGTH_SHORT).show();
-                });
+                requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "E-mail já utilizado", Toast.LENGTH_SHORT).show());
             } else {
                 long insertedId = userDao.insertUser(user);
 
