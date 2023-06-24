@@ -21,7 +21,7 @@ import com.example.trabalhofinal.interfaces.OnItemClickListener;
 import com.example.trabalhofinal.placeholder.PlaceholderContent;
 
 public class FragmentLista extends Fragment {
-
+    private static final String ARG_PARAM1 = "codigo-rastreio";
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private FragmentManager fragmentManager;
@@ -52,7 +52,13 @@ public class FragmentLista extends Fragment {
             recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    MainActivity.replaceFragment(new FragmentRastreio(), fragmentManager.beginTransaction());
+                    FragmentRastreio fragmentRastreio = new FragmentRastreio();
+                    Bundle args = new Bundle();
+
+                    args.putString(ARG_PARAM1, "ABLUBLE2");
+                    fragmentRastreio.setArguments(args);
+
+                    MainActivity.replaceFragment(fragmentRastreio, fragmentManager.beginTransaction());
                 }
             });
 
