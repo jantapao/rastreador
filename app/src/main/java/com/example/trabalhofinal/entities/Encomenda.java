@@ -18,6 +18,7 @@ public class Encomenda {
     private long id;
 
     private String codigo;
+    private String descricao;
     private long userId;
 
     public Encomenda() {}
@@ -36,6 +37,14 @@ public class Encomenda {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public long getUserId() {

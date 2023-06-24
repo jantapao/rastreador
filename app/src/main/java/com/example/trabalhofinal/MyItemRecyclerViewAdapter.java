@@ -1,24 +1,25 @@
 package com.example.trabalhofinal;
 
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.trabalhofinal.interfaces.OnItemClickListener;
-import com.example.trabalhofinal.placeholder.PlaceholderContent.PlaceholderItem;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.trabalhofinal.databinding.FragmentListaBinding;
+import com.example.trabalhofinal.entities.Encomenda;
+import com.example.trabalhofinal.interfaces.OnItemClickListener;
 
 import java.util.List;
 
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
-    private final List<PlaceholderItem> mValues;
+    private final List<Encomenda> encomendas;
     private OnItemClickListener onItemClickListener;
 
-    public MyItemRecyclerViewAdapter(List<PlaceholderItem> items) {
-        mValues = items;
+    public MyItemRecyclerViewAdapter(List<Encomenda> encomendas) {
+        this.encomendas = encomendas;
     }
 
     @Override
@@ -27,10 +28,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(final ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.mIdView.setText((int) encomendas.get(position).getId());
+        holder.mContentView.setText(encomendas.get(position).getDescricao());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +44,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return encomendas.size();
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -54,7 +54,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView;
         public final TextView mContentView;
-        public PlaceholderItem mItem;
 
         public ViewHolder(FragmentListaBinding binding) {
             super(binding.getRoot());

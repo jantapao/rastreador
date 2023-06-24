@@ -1,12 +1,12 @@
 package com.example.trabalhofinal.placeholder;
 
+import com.example.trabalhofinal.entities.Encomenda;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PlaceholderContent {
-    public static final List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
+    public static final List<Encomenda> ITEMS = new ArrayList<Encomenda>();
 
     private static final int COUNT = 25;
 
@@ -16,37 +16,16 @@ public class PlaceholderContent {
         }
     }
 
-    private static void addItem(PlaceholderItem item) {
+    private static void addItem(Encomenda item) {
         ITEMS.add(item);
     }
 
-    private static PlaceholderItem createPlaceholderItem(int position) {
-        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
-    }
+    private static Encomenda createPlaceholderItem(int position) {
+        Encomenda encomenda = new Encomenda();
 
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
-    }
+        encomenda.setId(Long.parseLong(String.valueOf(position)));
+        encomenda.setDescricao("Encomenda: " + position);
 
-    public static class PlaceholderItem {
-        public final String id;
-        public final String content;
-        public final String details;
-
-        public PlaceholderItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
+        return encomenda;
     }
 }
