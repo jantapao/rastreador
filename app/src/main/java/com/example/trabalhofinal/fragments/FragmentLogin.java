@@ -10,7 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.trabalhofinal.MainActivity;
 import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.dao.UserDao;
 import com.example.trabalhofinal.database.AppDatabase;
@@ -25,6 +27,7 @@ public class FragmentLogin extends Fragment {
     private static final String SALT = "$2a$10$1234567890123456789012";
 
     private UserDao userDao;
+    private FragmentManager fragmentManager;
 
     public FragmentLogin() {
         // Required empty public constructor
@@ -37,9 +40,9 @@ public class FragmentLogin extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentManager = requireActivity().getSupportFragmentManager();
+
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -98,7 +101,7 @@ public class FragmentLogin extends Fragment {
 
             requireActivity().runOnUiThread(() -> {
                 if (user != null) {
-                    Toast.makeText(requireContext(), "Usuário encontrado: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    MainActivity.replaceFragment(new FragmentLista(), fragmentManager.beginTransaction());
                 } else {
                     Toast.makeText(requireContext(), "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                 }
