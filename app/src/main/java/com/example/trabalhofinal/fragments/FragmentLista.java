@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.trabalhofinal.MainActivity;
 import com.example.trabalhofinal.MyItemRecyclerViewAdapter;
 import com.example.trabalhofinal.R;
 import com.example.trabalhofinal.interfaces.OnItemClickListener;
@@ -22,6 +24,7 @@ public class FragmentLista extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
 
+    private FragmentManager fragmentManager;
     private int mColumnCount = 1;
 
     public FragmentLista() {}
@@ -38,6 +41,7 @@ public class FragmentLista extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_list, container, false);
+        fragmentManager = requireActivity().getSupportFragmentManager();
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -48,7 +52,7 @@ public class FragmentLista extends Fragment {
             recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    Toast.makeText(requireContext(), "Clicou no item, mermão", Toast.LENGTH_SHORT).show();
+                    MainActivity.replaceFragment(new FragmentRastreio(), fragmentManager.beginTransaction());
                 }
             });
 
