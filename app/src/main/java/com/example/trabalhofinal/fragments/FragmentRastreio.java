@@ -1,5 +1,7 @@
 package com.example.trabalhofinal.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 import okhttp3.OkHttpClient;
 
@@ -70,9 +74,14 @@ public class FragmentRastreio extends Fragment {
         String urlImage = "https://rastreamento.correios.com.br/core/securimage/securimage_show.php";
         client.downloadImage(urlImage);
 
-        ImageView imagemCaptcha = view.findViewById(R.id.imageView);
+        File imageFile = new File(getContext().getFilesDir(), "imagem.png");
 
-        // TODO - Exibir a Imagem na Tela
+        if (imageFile.exists()) {
+            ImageView imagemCaptcha = view.findViewById(R.id.imageView);
+            imagemCaptcha.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+        } else {
+            // TODO - Criar uma Exception
+        }
 
         Button btnBuscar = view.findViewById(R.id.btnbuscar);
 
