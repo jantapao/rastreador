@@ -1,11 +1,13 @@
 package com.example.trabalhofinal.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,35 +49,42 @@ public class FragmentLista extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lista_list, container, false);
         fragmentManager = requireActivity().getSupportFragmentManager();
+        return inflater.inflate(R.layout.fragment_lista_list, container, false);
+    }
 
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter(listaEncomendas);
+        MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter(listaEncomendas);
 
-            recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    FragmentEditaCodigo fragmentEditaCodigo = new FragmentEditaCodigo();
-                    Bundle args = new Bundle();
+        recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                FragmentEditaCodigo fragmentEditaCodigo = new FragmentEditaCodigo();
+                Bundle args = new Bundle();
 
-                    args.putLong(ARG_PARAM2, listaEncomendas.get(position).getId());
-                    args.putString(ARG_PARAM3, listaEncomendas.get(position).getCodigo());
-                    args.putString(ARG_PARAM4, listaEncomendas.get(position).getDescricao());
-                    args.putLong(ARG_PARAM5, listaEncomendas.get(position).getUserId());
-                    fragmentEditaCodigo.setArguments(args);
+                args.putLong(ARG_PARAM2, listaEncomendas.get(position).getId());
+                args.putString(ARG_PARAM3, listaEncomendas.get(position).getCodigo());
+                args.putString(ARG_PARAM4, listaEncomendas.get(position).getDescricao());
+                args.putLong(ARG_PARAM5, listaEncomendas.get(position).getUserId());
+                fragmentEditaCodigo.setArguments(args);
 
-                    MainActivity.replaceFragment(fragmentEditaCodigo, fragmentManager.beginTransaction());
-                }
-            });
+                MainActivity.replaceFragment(fragmentEditaCodigo, fragmentManager.beginTransaction());
+            }
+        });
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(recyclerViewAdapter);
-        }
+        RecyclerView listaEncomendas = view.findViewById(R.id.listaEncomendas);
 
-        return view;
+        listaEncomendas.setLayoutManager(new LinearLayoutManager(requireContext()));
+        listaEncomendas.setAdapter(recyclerViewAdapter);
+
+        ((Button) view.findViewById(R.id.btnCadastrarEncomenda)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
