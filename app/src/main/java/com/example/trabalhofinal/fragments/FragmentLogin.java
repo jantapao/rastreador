@@ -106,7 +106,7 @@ public class FragmentLogin extends Fragment {
                     FragmentLogado fragmentLogado = new FragmentLogado();
                     Bundle args = new Bundle();
 
-                    args.putString(ARG_PARAM1, String.valueOf(user.getId()));
+                    args.putLong(ARG_PARAM1, user.getId());
                     fragmentLogado.setArguments(args);
 
                     MainActivity.replaceFragment(fragmentLogado, fragmentManager.beginTransaction());

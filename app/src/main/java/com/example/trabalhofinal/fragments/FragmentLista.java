@@ -31,7 +31,7 @@ public class FragmentLista extends Fragment {
     private final List<Encomenda> listaEncomendas;
 
     private FragmentManager fragmentManager;
-    private String userId;
+    private long userId;
     private int mColumnCount = 1;
 
     public FragmentLista(List<Encomenda> listaEncomendas) {
@@ -43,7 +43,7 @@ public class FragmentLista extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            userId = getArguments().getString(ARG_PARAM1);
+            userId = getArguments().getLong(ARG_PARAM1);
         }
     }
 
@@ -83,7 +83,13 @@ public class FragmentLista extends Fragment {
         ((Button) view.findViewById(R.id.btnCadastrarEncomenda)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentCadastraCodigo fragmentCadastraCodigo = new FragmentCadastraCodigo();
+                Bundle args = new Bundle();
 
+                args.putLong(ARG_PARAM1, userId);
+                fragmentCadastraCodigo.setArguments(args);
+
+                MainActivity.replaceFragment(fragmentCadastraCodigo, fragmentManager.beginTransaction());
             }
         });
     }

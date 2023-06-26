@@ -27,7 +27,7 @@ public class FragmentLogado extends Fragment {
 
     private FragmentManager fragmentManager;
     private EncomendaDao encomendaDao;
-    private String userId;
+    private long userId;
 
     public FragmentLogado() {
         // Required empty public constructor
@@ -38,7 +38,7 @@ public class FragmentLogado extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            userId = getArguments().getString(ARG_PARAM1);
+            userId = getArguments().getLong(ARG_PARAM1);
         }
     }
 
@@ -59,14 +59,14 @@ public class FragmentLogado extends Fragment {
                     AppDatabase db = AppDatabase.getInstance(requireContext());
                     encomendaDao = db.encomendaDao();
 
-                    List<Encomenda> encomendasDoUsuario = encomendaDao.getEncomendasByUserId(Long.parseLong(userId));
+                    List<Encomenda> encomendasDoUsuario = encomendaDao.getEncomendasByUserId(userId);
 
                     requireActivity().runOnUiThread(() -> {
                         if (!encomendasDoUsuario.isEmpty()) {
                             FragmentLista fragmentLista = new FragmentLista(encomendasDoUsuario);
                             Bundle args = new Bundle();
 
-                            args.putString(ARG_PARAM1, String.valueOf(userId));
+                            args.putLong(ARG_PARAM1, userId);
                             fragmentLista.setArguments(args);
 
                             MainActivity.replaceFragment(fragmentLista, fragmentManager.beginTransaction());
