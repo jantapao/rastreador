@@ -31,7 +31,7 @@ public class FragmentLista extends Fragment {
     private static final String ARG_PARAM4 = "encomenda-descricao";
     private static final String ARG_PARAM5 = "encomenda-userId";
 
-    private final List<Encomenda> listaEncomendas;
+    private List<Encomenda> listaEncomendas;
 
     private MyItemRecyclerViewAdapter recyclerViewAdapter;
     private FragmentManager fragmentManager;
@@ -106,9 +106,9 @@ public class FragmentLista extends Fragment {
         super.onResume();
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<Encomenda> encomendasDoUsuario = encomendaDao.getEncomendasByUserId(userId);
+            listaEncomendas = encomendaDao.getEncomendasByUserId(userId);
 
-            recyclerViewAdapter.setEncomendas(encomendasDoUsuario);
+            recyclerViewAdapter.setEncomendas(listaEncomendas);
             recyclerViewAdapter.notifyDataSetChanged();
         });
     }

@@ -99,6 +99,7 @@ public class FragmentEditaCodigo extends Fragment {
                     requireActivity().runOnUiThread(() -> {
                         if (updatedRows > 0) {
                             Toast.makeText(requireContext(), "Encomenda atualizada com sucesso", Toast.LENGTH_SHORT).show();
+                            fragmentManager.popBackStack();
                         } else {
                             Toast.makeText(requireContext(), "Não foi possível atualizar a encomenda", Toast.LENGTH_SHORT).show();
                         }
@@ -123,6 +124,7 @@ public class FragmentEditaCodigo extends Fragment {
                     requireActivity().runOnUiThread(() -> {
                        if (deletedRows > 0) {
                            Toast.makeText(requireContext(), "Encomenda removida com sucesso", Toast.LENGTH_SHORT).show();
+                           fragmentManager.popBackStack();
                        } else {
                            Toast.makeText(requireContext(), "Não foi possível remover a encomenda", Toast.LENGTH_SHORT).show();
                        }

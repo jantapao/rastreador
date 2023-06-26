@@ -61,19 +61,13 @@ public class FragmentLogado extends Fragment {
 
                     List<Encomenda> encomendasDoUsuario = encomendaDao.getEncomendasByUserId(userId);
 
-                    requireActivity().runOnUiThread(() -> {
-                        if (!encomendasDoUsuario.isEmpty()) {
-                            FragmentLista fragmentLista = new FragmentLista(encomendasDoUsuario);
-                            Bundle args = new Bundle();
+                    FragmentLista fragmentLista = new FragmentLista(encomendasDoUsuario);
+                    Bundle args = new Bundle();
 
-                            args.putLong(ARG_PARAM1, userId);
-                            fragmentLista.setArguments(args);
+                    args.putLong(ARG_PARAM1, userId);
+                    fragmentLista.setArguments(args);
 
-                            MainActivity.replaceFragment(fragmentLista, fragmentManager.beginTransaction());
-                        } else {
-                            Toast.makeText(requireContext(), "O usuário não possui encomendas salvas", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    MainActivity.replaceFragment(fragmentLista, fragmentManager.beginTransaction());
                 });
             }
         });
