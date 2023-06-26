@@ -71,7 +71,7 @@ public class FragmentCadastraCodigo extends Fragment {
                     requireActivity().runOnUiThread(() -> {
                        if (insertedId > 0) {
                            Toast.makeText(requireContext(), "Encomenda cadastrada com sucesso", Toast.LENGTH_SHORT).show();
-                           fragmentManager.beginTransaction().remove(FragmentCadastraCodigo.this).commit();
+                           fragmentManager.popBackStack();
                        } else {
                            Toast.makeText(requireContext(), "Não foi possível inserir a encomenda", Toast.LENGTH_SHORT).show();
                        }
@@ -83,7 +83,7 @@ public class FragmentCadastraCodigo extends Fragment {
         ((Button) view.findViewById(R.id.btncancelaadd)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().remove(FragmentCadastraCodigo.this).commit();
+                fragmentManager.popBackStack();
             }
         });
     }

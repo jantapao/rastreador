@@ -15,7 +15,7 @@ import com.example.trabalhofinal.interfaces.OnItemClickListener;
 import java.util.List;
 
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
-    private final List<Encomenda> encomendas;
+    private List<Encomenda> encomendas;
     private OnItemClickListener onItemClickListener;
 
     public MyItemRecyclerViewAdapter(List<Encomenda> encomendas) {
@@ -48,6 +48,10 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setEncomendas(List<Encomenda> encomendas) {
+        this.encomendas = encomendas;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

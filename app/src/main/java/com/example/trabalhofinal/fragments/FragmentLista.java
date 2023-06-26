@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.trabalhofinal.MainActivity;
 import com.example.trabalhofinal.MyItemRecyclerViewAdapter;
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.dao.EncomendaDao;
+import com.example.trabalhofinal.database.AppDatabase;
 import com.example.trabalhofinal.entities.Encomenda;
 import com.example.trabalhofinal.interfaces.OnItemClickListener;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class FragmentLista extends Fragment {
     private static final String ARG_PARAM1 = "user-id";
@@ -30,7 +33,9 @@ public class FragmentLista extends Fragment {
 
     private final List<Encomenda> listaEncomendas;
 
+    private MyItemRecyclerViewAdapter recyclerViewAdapter;
     private FragmentManager fragmentManager;
+    private EncomendaDao encomendaDao;
     private long userId;
     private int mColumnCount = 1;
 
@@ -57,7 +62,9 @@ public class FragmentLista extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter(listaEncomendas);
+        encomendaDao = AppDatabase.getInstance(requireContext()).encomendaDao();
+
+        recyclerViewAdapter = new MyItemRecyclerViewAdapter(listaEncomendas);
 
         recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -91,6 +98,18 @@ public class FragmentLista extends Fragment {
 
                 MainActivity.replaceFragment(fragmentCadastraCodigo, fragmentManager.beginTransaction());
             }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Encomenda> encomendasDoUsuario = encomendaDao.getEncomendasByUserId(userId);
+
+            recyclerViewAdapter.setEncomendas(encomendasDoUsuario);
+            recyclerViewAdapter.notifyDataSetChanged();
         });
     }
 }
