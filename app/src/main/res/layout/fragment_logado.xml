@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.FragmentLogado">
+    tools:context=".fragments.FragmentLogado">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnListaEncomendas"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnRastrear"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="136dp"
@@ -27,6 +27,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/btnListaEncomendas"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

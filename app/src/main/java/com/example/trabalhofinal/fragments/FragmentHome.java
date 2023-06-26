@@ -1,4 +1,4 @@
-package com.example.trabalhofinal.Fragments;
+package com.example.trabalhofinal.fragments;
 
 import android.os.Bundle;
 
@@ -29,9 +29,7 @@ public class FragmentHome extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentManager = requireActivity().getSupportFragmentManager();
         return inflater.inflate(R.layout.fragmento_home, container, false);
     }
