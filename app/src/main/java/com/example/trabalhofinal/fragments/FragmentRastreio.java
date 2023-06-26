@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -80,7 +81,9 @@ public class FragmentRastreio extends Fragment {
                 String codigoDeRastreio = ((TextInputEditText) view.findViewById(R.id.inputcodigo)).getText().toString();
                 String urlRastreio = String.format("https://www.linkcorreios.com.br/?id=%s", codigoDeRastreio);
 
-                RastreioEncomenda.rastrearEncomenda(urlRastreio);
+                String resultadoRastreamento = RastreioEncomenda.rastrearEncomenda(urlRastreio, requireContext());
+
+                ((TextView) view.findViewById(R.id.resultadoRastreamento)).setText(resultadoRastreamento);
             }
         });
     }

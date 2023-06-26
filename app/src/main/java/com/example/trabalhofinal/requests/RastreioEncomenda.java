@@ -4,18 +4,21 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.example.trabalhofinal.interfaces.OnJsonResponseListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -67,23 +70,42 @@ public class RastreioEncomenda {
         }
     }
 
-    public static void rastrearEncomenda(String url) {
+    public static String rastrearEncomenda(String url, Context context) {
         Request request = new Request.Builder().url(url).build();
 
-        new OkHttpClient.Builder().build().newCall(request).enqueue(new Callback() {
+        Future<String> future = Executors.newSingleThreadExecutor().submit(new Callable<String>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                // TODO - Tratar a Falha da Request
-            }
+            public String call() throws Exception {
+                try {
+                    Response response = new OkHttpClient.Builder().build().newCall(request).execute();
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.d("RESPOSTA", response.body().string());
-                } else {
-                    Log.w("ERRO", "Erro na resposta do servidor: " + response.code());
+                    if (response.isSuccessful()) {
+                        String HTML = response.body().string();
+
+                        Document page = Jsoup.parse(HTML);
+                        Element cardHeader = page.select("div.card-header").first();
+
+                        return cardHeader.text();
+                    } else {
+                        // TODO - Tratar a Resposta Incorreta
+                    }
+                } catch (IOException e) {
+                    Toast.makeText(context, "Houve um erro na requisição", Toast.LENGTH_SHORT).show();
                 }
+
+                return null;
             }
         });
+
+        String resultadoRastreamento;
+
+        try {
+            resultadoRastreamento = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            // TODO - Tratar a Exception
+            resultadoRastreamento = null;
+        }
+
+        return resultadoRastreamento;
     }
 }
