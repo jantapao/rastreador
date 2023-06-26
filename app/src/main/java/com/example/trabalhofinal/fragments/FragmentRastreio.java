@@ -60,18 +60,7 @@ public class FragmentRastreio extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String urlImage = "https://rastreamento.correios.com.br/core/securimage/securimage_show.php";
-        RastreioEncomenda.downloadImage(urlImage, requireContext());
-
         ((TextInputEditText) view.findViewById(R.id.inputcodigo)).setText(codigoDeRastreio);
-
-        File imageFile = new File(getContext().getFilesDir(), "imagem-captcha.png");
-
-        if (imageFile.exists()) {
-            ((ImageView) view.findViewById(R.id.imageView)).setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
-        } else {
-            Toast.makeText(requireContext(), "Não foi possível carregar o Captcha", Toast.LENGTH_SHORT).show();
-        }
 
         Button btnBuscar = view.findViewById(R.id.btnbuscar);
 
