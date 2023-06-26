@@ -1,45 +1,27 @@
 package com.example.trabalhofinal.fragments;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.trabalhofinal.R;
-import com.example.trabalhofinal.interfaces.OnJsonResponseListener;
 import com.example.trabalhofinal.requests.RastreioEncomenda;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-
 public class FragmentRastreio extends Fragment {
-    private static final String ARG_PARAM1 = "codigo-rastreio";
+    private static final String ARG_PARAM1 = "encomenda-codigo";
 
     private String codigoDeRastreio;
 
     public FragmentRastreio() {
         // Required empty public constructor
-    }
-
-    public static FragmentRastreio newInstance(String param1, String param2) {
-        FragmentRastreio fragment = new FragmentRastreio();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override

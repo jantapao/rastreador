@@ -2,39 +2,46 @@ package com.example.trabalhofinal.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabalhofinal.MainActivity;
 import com.example.trabalhofinal.MyItemRecyclerViewAdapter;
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.entities.Encomenda;
 import com.example.trabalhofinal.interfaces.OnItemClickListener;
-import com.example.trabalhofinal.placeholder.PlaceholderContent;
+
+import java.util.List;
 
 public class FragmentLista extends Fragment {
-    private static final String ARG_PARAM1 = "codigo-rastreio";
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_PARAM1 = "user-id";
+    private static final String ARG_PARAM2 = "encomenda-id";
+    private static final String ARG_PARAM3 = "encomenda-codigo";
+    private static final String ARG_PARAM4 = "encomenda-descricao";
+    private static final String ARG_PARAM5 = "encomenda-userId";
+
+    private final List<Encomenda> listaEncomendas;
 
     private FragmentManager fragmentManager;
+    private String userId;
     private int mColumnCount = 1;
 
-    public FragmentLista() {}
+    public FragmentLista(List<Encomenda> listaEncomendas) {
+        this.listaEncomendas = listaEncomendas;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -47,18 +54,21 @@ public class FragmentLista extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
-            MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS);
+            MyItemRecyclerViewAdapter recyclerViewAdapter = new MyItemRecyclerViewAdapter(listaEncomendas);
 
             recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    FragmentRastreio fragmentRastreio = new FragmentRastreio();
+                    FragmentEditaCodigo fragmentEditaCodigo = new FragmentEditaCodigo();
                     Bundle args = new Bundle();
 
-                    args.putString(ARG_PARAM1, "ABLUBLE2");
-                    fragmentRastreio.setArguments(args);
+                    args.putLong(ARG_PARAM2, listaEncomendas.get(position).getId());
+                    args.putString(ARG_PARAM3, listaEncomendas.get(position).getCodigo());
+                    args.putString(ARG_PARAM4, listaEncomendas.get(position).getDescricao());
+                    args.putLong(ARG_PARAM5, listaEncomendas.get(position).getUserId());
+                    fragmentEditaCodigo.setArguments(args);
 
-                    MainActivity.replaceFragment(fragmentRastreio, fragmentManager.beginTransaction());
+                    MainActivity.replaceFragment(fragmentEditaCodigo, fragmentManager.beginTransaction());
                 }
             });
 

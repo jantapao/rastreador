@@ -1,6 +1,7 @@
 package com.example.trabalhofinal.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.trabalhofinal.MainActivity;
 import com.example.trabalhofinal.R;
+import com.example.trabalhofinal.dao.EncomendaDao;
 import com.example.trabalhofinal.dao.UserDao;
 import com.example.trabalhofinal.database.AppDatabase;
+import com.example.trabalhofinal.entities.Encomenda;
 import com.example.trabalhofinal.entities.User;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -25,6 +28,7 @@ import java.util.concurrent.Executors;
 
 public class FragmentLogin extends Fragment {
     private static final String SALT = "$2a$10$1234567890123456789012";
+    private static final String ARG_PARAM1 = "user-id";
 
     private UserDao userDao;
     private FragmentManager fragmentManager;
@@ -41,7 +45,6 @@ public class FragmentLogin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentManager = requireActivity().getSupportFragmentManager();
-
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -100,7 +103,13 @@ public class FragmentLogin extends Fragment {
 
             requireActivity().runOnUiThread(() -> {
                 if (user != null) {
-                    MainActivity.replaceFragment(new FragmentLista(), fragmentManager.beginTransaction());
+                    FragmentLogado fragmentLogado = new FragmentLogado();
+                    Bundle args = new Bundle();
+
+                    args.putString(ARG_PARAM1, String.valueOf(user.getId()));
+                    fragmentLogado.setArguments(args);
+
+                    MainActivity.replaceFragment(fragmentLogado, fragmentManager.beginTransaction());
                 } else {
                     Toast.makeText(requireContext(), "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                 }

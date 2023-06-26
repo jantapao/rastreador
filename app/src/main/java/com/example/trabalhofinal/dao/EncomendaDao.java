@@ -1,8 +1,10 @@
 package com.example.trabalhofinal.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.trabalhofinal.entities.Encomenda;
 
@@ -17,5 +19,11 @@ public interface EncomendaDao {
     List<Encomenda> getAllEncomendas();
 
     @Query("SELECT * FROM encomendas WHERE userId = :userId")
-    List<Encomenda> getEncomendasByUserId(int userId);
+    List<Encomenda> getEncomendasByUserId(long userId);
+
+    @Delete
+    int deleteEncomenda(Encomenda encomenda);
+
+    @Update
+    int updateEncomenda(Encomenda encomenda);
 }
