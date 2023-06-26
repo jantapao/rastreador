@@ -3,6 +3,7 @@ package com.example.trabalhofinal.requests;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.example.trabalhofinal.interfaces.OnJsonResponseListener;
 
@@ -14,60 +15,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class RastreioEncomenda {
-    private OkHttpClient client;
-    private Context context;
-
-    public RastreioEncomenda(Context context) {
-        this.context = context;
-        client = createOkHttpClient();
+    private RastreioEncomenda() {
+        throw new IllegalStateException("Utility Class");
     }
 
-    private OkHttpClient createOkHttpClient() {
-        CookieJar cookieJar = new CookieJar() {
-            private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
-
-            @Override
-            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                cookieStore.put(url.host(), cookies);
-            }
-
-            @Override
-            public List<Cookie> loadForRequest(HttpUrl url) {
-                List<Cookie> cookies = cookieStore.get(url.host());
-                return cookies != null ? cookies : new ArrayList<>();
-            }
-        };
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-        builder.cookieJar(cookieJar);
-
-        return builder.build();
-    }
-
-    public void downloadImage(String url) {
+    public static void downloadImage(OkHttpClient client, String url, Context context) {
         Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
 
-        call.enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                // TODO - Lidar com o erro de requisição
+                // TODO - Tratar a Falha na Requisição
             }
 
             @Override
@@ -77,7 +44,7 @@ public class RastreioEncomenda {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
                     if (bitmap != null) {
-                        saveImageToInternalStorage(bitmap, "imagem.png");
+                        saveImageToInternalStorage(bitmap, "imagem-captcha.png", context);
                     } else {
                         // TODO - Lidar com a falha no download da imagem
                     }
@@ -86,7 +53,7 @@ public class RastreioEncomenda {
         });
     }
 
-    private void saveImageToInternalStorage(Bitmap bitmap, String fileName) {
+    private static void saveImageToInternalStorage(Bitmap bitmap, String fileName, Context context) {
         try {
             File directory = context.getFilesDir();
             File file = new File(directory, fileName);
@@ -100,14 +67,13 @@ public class RastreioEncomenda {
         }
     }
 
-    public void rastrearEncomenda(String url, final OnJsonResponseListener listener) {
+    public static void rastrearEncomenda(OkHttpClient client, String url, final OnJsonResponseListener listener) {
         Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
 
-        call.enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                listener.onFailure(e.getMessage());
+                // TODO - Tratar a Falha da Request
             }
 
             @Override
