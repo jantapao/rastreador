@@ -28,10 +28,10 @@ public class RastreioEncomenda {
         throw new IllegalStateException("Utility Class");
     }
 
-    public static void downloadImage(OkHttpClient client, String url, Context context) {
+    public static void downloadImage(String url, Context context) {
         Request request = new Request.Builder().url(url).build();
 
-        client.newCall(request).enqueue(new Callback() {
+        new OkHttpClient.Builder().build().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // TODO - Tratar a Falha na Requisição
@@ -67,10 +67,10 @@ public class RastreioEncomenda {
         }
     }
 
-    public static void rastrearEncomenda(OkHttpClient client, String url, final OnJsonResponseListener listener) {
+    public static void rastrearEncomenda(String url) {
         Request request = new Request.Builder().url(url).build();
 
-        client.newCall(request).enqueue(new Callback() {
+        new OkHttpClient.Builder().build().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // TODO - Tratar a Falha da Request
@@ -79,16 +79,9 @@ public class RastreioEncomenda {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    String json = response.body().string();
-
-                    try {
-                        JSONObject jsonObject = new JSONObject(json);
-                        listener.onSuccess(jsonObject);
-                    } catch (JSONException e) {
-                        listener.onFailure(e.getMessage());
-                    }
+                    Log.d("RESPOSTA", response.body().string());
                 } else {
-                    listener.onFailure("Erro na resposta do servidor: " + response.code());
+                    Log.w("ERRO", "Erro na resposta do servidor: " + response.code());
                 }
             }
         });
